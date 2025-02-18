@@ -3,6 +3,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { LinkBtn } from "@/components/LinkBtn/LinkBtn";
+import { useAuth } from "@/contexts/AuthContext";
 
 type FeatureItemProps = {
 	iconSrc: string;
@@ -45,9 +46,15 @@ const featureItems = [
 ];
 
 export default function Page() {
+	const { user } = useAuth();
+
 	return (
 		<>
-			<header>user</header>
+			<header className={styles.header}>
+				<div className={styles.userInfo}>
+					<span>{user ? user.displayName : "ゲスト"}さん</span>
+				</div>
+			</header>
 			<main className={styles.main}>
 				<div className={styles.mv}>
 					<Image

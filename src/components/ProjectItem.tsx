@@ -89,7 +89,9 @@ export default function ProjectItem({
 		// ボタンクリック時にリンクの遷移を防ぐ
 		if (
 			(e.target as HTMLElement).tagName === "BUTTON" ||
-			(e.target as HTMLElement).closest("button")
+			(e.target as HTMLElement).closest("button") ||
+			(e.target as HTMLElement).tagName === "INPUT" ||
+			(e.target as HTMLElement).closest("input")
 		) {
 			e.preventDefault();
 		}

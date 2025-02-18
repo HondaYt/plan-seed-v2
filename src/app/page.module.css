@@ -97,3 +97,20 @@
     height: auto;
   }
 }
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 2rem;
+  width: 100%;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo span {
+  color: #333;
+}

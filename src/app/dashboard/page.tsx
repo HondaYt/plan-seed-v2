@@ -110,7 +110,7 @@ export default function DashboardPage() {
 					className={styles.logo}
 				/>
 				<div className={styles.userSection}>
-					<span className={styles.userEmail}>{user.email}</span>
+					<span className={styles.userName}>{user.displayName}</span>
 					<button
 						type="button"
 						onClick={handleSignOut}

@@ -10,13 +10,17 @@ service cloud.firestore {
     }
     
     match /projects/{projectId} {
+      // プロジェクトの読み取り権限
       allow read: if request.auth != null && 
         (request.auth.uid == resource.data.userId || 
          request.auth.uid in resource.data.sharedWith);
+      // プロジェクトの作成権限
       allow create: if request.auth != null && 
         request.auth.uid == request.resource.data.userId;
+      // プロジェクトの更新権限（オーナーまたは共有されたユーザー）
       allow update: if request.auth != null && 
-        (request.auth.uid == resource.data.userId);
+        (request.auth.uid == resource.data.userId ||
+         request.auth.uid in resource.data.sharedWith);
     }
   }
 } 
