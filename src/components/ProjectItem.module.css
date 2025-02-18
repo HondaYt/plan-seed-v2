@@ -1,0 +1,144 @@
+.projectItem {
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.projectHeader {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 8px;
+	
+	h3 {
+		margin: 0;
+		color: #333;
+		font-size: 1.1rem;
+	}
+}
+
+.projectActions{
+	display: flex;
+	gap: 2px;
+}
+
+.editButton,
+.shareButton,
+.deleteButton {
+	padding: 4px 8px;
+	background-color: #f0f0f0;
+	border: none;
+	border-radius: 4px;
+	color: #666;
+	cursor: pointer;
+	font-size: 0.9rem;
+	&:hover {
+		background-color: #e0e0e0;
+	}
+}
+
+.deleteButton {
+	background-color: #ff4444;
+	color: white;
+	&:hover {
+		background-color: #cc0000;
+	}
+}
+
+.projectDate {
+	font-size: 0.8rem;
+	color: #666;
+	margin: 0;
+}
+
+.editForm {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.editInput {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 1rem;
+}
+
+.editButtons {
+	display: flex;
+	gap: 8px;
+}
+
+.saveButton,
+.cancelButton {
+	padding: 6px 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.9rem;
+}
+
+.saveButton {
+	background-color: #4caf50;
+	color: white;
+}
+
+.cancelButton {
+	background-color: #f44336;
+	color: white;
+}
+
+.saveButton:hover {
+	background-color: #45a049;
+}
+
+.cancelButton:hover {
+	background-color: #da190b;
+}
+
+.sharedUserList {
+	list-style: none;
+	padding: 0;
+	margin: 10px 0;
+}
+
+.sharedUserItem {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px;
+	background-color: #f5f5f5;
+	margin-bottom: 4px;
+	border-radius: 4px;
+}
+
+.removeShareButton {
+	padding: 4px 8px;
+	background-color: #ff4444;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 0.9rem;
+	&:hover {
+		background-color: #cc0000;
+	}
+}
+
+.userInfo {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.userEmail {
+	font-weight: 500;
+	color: #333;
+}
+
+.userName {
+	font-size: 0.85rem;
+	color: #666;
+} 

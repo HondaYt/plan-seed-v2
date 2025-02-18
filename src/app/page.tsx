@@ -1,95 +1,79 @@
+"use client";
+
 import Image from "next/image";
 import styles from "./page.module.css";
+import { LinkBtn } from "@/components/LinkBtn/LinkBtn";
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+type FeatureItemProps = {
+	iconSrc: string;
+	title: string;
+	description: string;
+};
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+const FeatureItem = (props: FeatureItemProps) => {
+	return (
+		<div className={styles.featureItem}>
+			<div className={styles.iconWrapper}>
+				<Image src={props.iconSrc} height={40} width={40} alt={props.title} />
+			</div>
+			<h2>{props.title}</h2>
+			<p>{props.description}</p>
+		</div>
+	);
+};
+
+const featureItems = [
+	{
+		iconSrc: "/icons/idea.svg",
+		title: "アイデア整理",
+		description: "マインドマップで自由に発想を広げ、アイデアを整理できます",
+	},
+	{
+		iconSrc: "/icons/target.svg",
+		title: "ターゲット設定",
+		description: "ユーザー像を具体的に設定し、ニーズを明確にします",
+	},
+	{
+		iconSrc: "/icons/feature.svg",
+		title: "機能定義",
+		description: "必要な機能を洗い出し、優先順位をつけて整理します",
+	},
+];
+
+export default function Page() {
+	return (
+		<>
+			<header>user</header>
+			<main className={styles.main}>
+				<div className={styles.mv}>
+					<Image
+						src={"/logo.svg"}
+						height={100}
+						width={500}
+						alt="Plan Seed"
+						className={styles.logo}
+					/>
+					<p className={styles.catchphrase}>アイデアを育て、企画を実らせる</p>
+				</div>
+
+				<div className={styles.features}>
+					{featureItems.map((featureItem, featureItemIdx) => (
+						<FeatureItem
+							key={featureItemIdx}
+							title={featureItem.title}
+							description={featureItem.description}
+							iconSrc={featureItem.iconSrc}
+						/>
+					))}
+				</div>
+
+				<div className={styles.startSection}>
+					<p className={styles.startText}>
+						さあ、あなたの企画づくりを始めましょう！
+					</p>
+					<LinkBtn href={"/dashboard"}>はじめる</LinkBtn>
+				</div>
+			</main>
+		</>
+	);
 }

@@ -1,0 +1,43 @@
+.linkBtn {
+    display: grid;
+    place-items: center;
+    padding: 1rem 1rem;
+    width: 100%;
+    max-width: 16rem;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.primary {
+    background: var(--primary-color);
+    color: #fff;
+
+    &:hover {
+        background: var(--primary-color-accessible);
+    }
+}
+
+.secondary {
+    border: 2px solid var(--primary-color);
+    background: #fff;
+    color: var(--primary-color);
+
+    &:hover {
+
+        background: #eee;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+
+    &.primary {
+        background: #ddd;
+    }
+
+    &.secondary {
+        border: 2px solid #ddd;
+        color: #ddd;
+    }
+}
