@@ -14,10 +14,14 @@ const FeatureItem = (props: FeatureItemProps) => {
 	return (
 		<div className={styles.featureItem}>
 			<div className={styles.iconWrapper}>
-				<Image src={props.iconSrc} height={40} width={40} alt={props.title} />
+				<img
+					src={props.iconSrc}
+					alt={props.title}
+					className={styles.iconImage}
+				/>
 			</div>
-			<h2>{props.title}</h2>
-			<p>{props.description}</p>
+			<h2 className={styles.featureTitle}>{props.title}</h2>
+			<p className={styles.featureDescription}>{props.description}</p>
 		</div>
 	);
 };

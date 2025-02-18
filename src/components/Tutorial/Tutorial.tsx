@@ -74,7 +74,7 @@ export function Tutorial({
 									<img
 										src={steps[currentStep].image}
 										alt="チュートリアル説明画像"
-										className={imageVisible ? styles.visible : ""}
+										className={`${styles.tutorialImage} ${imageVisible ? styles.visible : ""}`}
 									/>
 								)}
 							</div>
@@ -84,7 +84,7 @@ export function Tutorial({
 										<div
 											key={step.target}
 											className={`${styles.step} ${
-												index === currentStep ? styles.active : ""
+												index === currentStep ? styles.stepActive : ""
 											}`}
 										>
 											{step.content}
@@ -107,6 +107,7 @@ export function Tutorial({
 										type="checkbox"
 										checked={hideForever}
 										onChange={(e) => setHideForever(e.target.checked)}
+										className={styles.checkbox}
 									/>
 									次回から表示しない
 								</label>

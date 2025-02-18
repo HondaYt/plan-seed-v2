@@ -101,12 +101,14 @@ export default function ProjectItem({
 				{!isEditing ? (
 					<>
 						<div className={styles.projectHeader}>
-							<div>
-								<h3>{name}</h3>
-								<span className={styles.projectType}>
-									{userId === currentUserId ? "オーナー" : "ゲスト"}
-								</span>
-							</div>
+							<h3 className={styles.headerTitle}>
+								<div>
+									<h3>{name}</h3>
+									<span className={styles.projectType}>
+										{userId === currentUserId ? "オーナー" : "ゲスト"}
+									</span>
+								</div>
+							</h3>
 							<div className={styles.projectActions}>
 								{userId === currentUserId && (
 									<>
