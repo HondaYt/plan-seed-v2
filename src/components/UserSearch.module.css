@@ -1,38 +1,49 @@
 .userSearch {
-	margin: 20px 0;
+	margin-bottom: 1.5rem;
 }
 
 .searchForm {
 	display: flex;
-	gap: 10px;
-	margin-bottom: 15px;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
 }
 
 .searchInput {
 	flex: 1;
-	padding: 8px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	font-size: 1rem;
+	padding: 0.625rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.375rem;
+	font-size: 0.875rem;
+	color: #374151;
+}
+
+.searchInput:focus {
+	outline: 2px solid var(--primary-color);
+	outline-offset: -1px;
+	border-color: var(--primary-color);
 }
 
 .searchButton {
-	padding: 8px 16px;
-	background-color: #4a90e2;
-	color: white;
+	padding: 0.625rem 1rem;
+	background-color: var(--primary-color);
+	color: #ffffff;
 	border: none;
-	border-radius: 4px;
+	border-radius: 0.375rem;
 	cursor: pointer;
+	font-size: 0.875rem;
+	font-weight: 500;
+	transition: all 0.2s;
 }
 
 .searchButton:hover {
-	background-color: #357abd;
+	background-color: var(--primary-color-accessible);
 }
 
 .loading {
 	text-align: center;
-	color: #666;
-	padding: 10px;
+	color: #6b7280;
+	padding: 1rem;
+	font-size: 0.875rem;
 }
 
 .resultList {
@@ -45,35 +56,41 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	padding: 10px;
-	background-color: #f5f5f5;
-	margin-bottom: 5px;
-	border-radius: 4px;
+	padding: 0.75rem;
+	border: 1px solid #e5e7eb;
+	border-radius: 0.375rem;
+	margin-bottom: 0.5rem;
+	background-color: #ffffff;
 }
 
 .selectButton {
-	padding: 4px 8px;
-	background-color: #4caf50;
-	color: white;
+	padding: 0.375rem 0.75rem;
+	background-color: var(--primary-color);
+	color: #ffffff;
 	border: none;
-	border-radius: 4px;
+	border-radius: 0.375rem;
 	cursor: pointer;
+	font-size: 0.75rem;
+	font-weight: 500;
+	transition: all 0.2s;
 }
 
 .selectButton:hover {
-	background-color: #45a049;
+	background-color: var(--primary-color-accessible);
 }
 
 .userInfo {
 	display: flex;
 	flex-direction: column;
+	gap: 0.25rem;
 }
 
 .userEmail {
-	font-weight: bold;
+	font-size: 0.875rem;
+	color: #374151;
 }
 
 .userName {
-	font-size: 0.9em;
-	color: #666;
+	font-size: 0.75rem;
+	color: #6b7280;
 } 

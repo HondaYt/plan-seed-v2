@@ -55,6 +55,7 @@ export default function UserSearch({ onSelect }: UserSearchProps) {
 								)}
 							</div>
 							<button
+								type="button"
 								onClick={() => onSelect(user)}
 								className={styles.selectButton}
 							>

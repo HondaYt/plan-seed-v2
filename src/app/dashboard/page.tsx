@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import styles from "./dashboard.module.css";
+import styles from "./page.module.css";
 import AddProject from "@/components/AddProject";
 import type { Project } from "@/types/project";
 import {

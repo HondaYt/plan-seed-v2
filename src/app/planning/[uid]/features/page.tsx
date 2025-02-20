@@ -21,7 +21,7 @@ function FeatureContent() {
 		input: "",
 		list: [],
 	});
-	const [targetUrl, setTargetUrl] = useState("feature/detail");
+	const [targetUrl, setTargetUrl] = useState("features/detail");
 
 	const handleAdd = () => {
 		if (state.input.trim() === "") return;
@@ -143,9 +143,9 @@ function FeatureUrlHandler({
 		if (selectedFeatures.length > 0) {
 			const params = new URLSearchParams();
 			params.append("features", encodeURIComponent(selectedFeatures.join(",")));
-			setTargetUrl(`feature/detail?${params.toString()}`);
+			setTargetUrl(`features/detail?${params.toString()}`);
 		} else {
-			setTargetUrl("feature/detail");
+			setTargetUrl("features/detail");
 		}
 	}, [list, setTargetUrl]);
 

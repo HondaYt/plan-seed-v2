@@ -4,6 +4,8 @@ import UserSearch from "./UserSearch";
 import type { UserSearchResult } from "@/lib/firebase/users";
 import { getUserInfo } from "@/lib/firebase/users";
 import Link from "next/link";
+import Image from "next/image";
+import ProjectSettingsModal from "./ProjectSettingsModal";
 
 type ProjectItemProps = {
 	id: string;
@@ -18,8 +20,7 @@ type ProjectItemProps = {
 	currentUserId: string;
 };
 
-// 新しい型を追加
-type SharedUserInfo = {
+export type SharedUserInfo = {
 	userId: string;
 	email?: string;
 	displayName?: string | null;
@@ -37,12 +38,9 @@ export default function ProjectItem({
 	userId,
 	currentUserId,
 }: ProjectItemProps) {
-	const [isEditing, setIsEditing] = useState(false);
-	const [isSharing, setIsSharing] = useState(false);
-	const [editedName, setEditedName] = useState(name);
+	const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 	const [sharedUsers, setSharedUsers] = useState<SharedUserInfo[]>([]);
 
-	// 共有ユーザーの情報を取得
 	useEffect(() => {
 		const loadSharedUsers = async () => {
 			const userInfoPromises = sharedWith.map(async (userId) => {
@@ -64,153 +62,58 @@ export default function ProjectItem({
 		}
 	}, [sharedWith]);
 
-	const handleSubmit = (e: React.FormEvent) => {
-		e.preventDefault();
-		if (editedName.trim() && editedName !== name) {
-			onUpdate(id, editedName.trim());
-		}
-		setIsEditing(false);
-	};
-
-	const handleUserSelect = (user: UserSearchResult) => {
-		if (user.uid === currentUserId) {
-			alert("自分自身には共有できません");
-			return;
-		}
-		if (sharedWith.includes(user.uid)) {
-			alert("既に共有済みのユーザーです");
-			return;
-		}
-		onShare(id, user.uid);
-		setIsSharing(false);
-	};
-
 	const handleClick = (e: React.MouseEvent) => {
-		// ボタンクリック時にリンクの遷移を防ぐ
 		if (
 			(e.target as HTMLElement).tagName === "BUTTON" ||
-			(e.target as HTMLElement).closest("button") ||
-			(e.target as HTMLElement).tagName === "INPUT" ||
-			(e.target as HTMLElement).closest("input")
+			(e.target as HTMLElement).closest("button")
 		) {
 			e.preventDefault();
 		}
 	};
 
+	const handleSettingsClick = (e: React.MouseEvent) => {
+		e.preventDefault();
+		e.stopPropagation();
+		setIsSettingsOpen(true);
+	};
+
 	return (
 		<Link href={`/planning/${id}/genre`}>
 			<div className={styles.projectItem} onClick={handleClick}>
-				{!isEditing ? (
-					<>
-						<div className={styles.projectHeader}>
-							<h3 className={styles.headerTitle}>
-								<div>
-									<h3>{name}</h3>
-									<span className={styles.projectType}>
-										{userId === currentUserId ? "オーナー" : "ゲスト"}
-									</span>
-								</div>
-							</h3>
-							<div className={styles.projectActions}>
-								{userId === currentUserId && (
-									<>
-										<button
-											type="button"
-											onClick={() => setIsEditing(true)}
-											className={styles.editButton}
-										>
-											編集
-										</button>
-										<button
-											type="button"
-											onClick={() => setIsSharing(!isSharing)}
-											className={styles.shareButton}
-										>
-											共有
-										</button>
-										<button
-											type="button"
-											onClick={() => {
-												if (
-													window.confirm("このプロジェクトを削除しますか？")
-												) {
-													onDelete(id);
-												}
-											}}
-											className={styles.deleteButton}
-										>
-											削除
-										</button>
-									</>
-								)}
-							</div>
+				<div className={styles.projectHeader}>
+					<h3 className={styles.headerTitle}>
+						<div>
+							<h3>{name}</h3>
+							<span className={styles.projectType}>
+								{userId === currentUserId ? "オーナー" : "ゲスト"}
+							</span>
 						</div>
-						<p className={styles.projectDate}>
-							作成日: {createdAt.toLocaleDateString()}
-						</p>
-						{isSharing && (
-							<div className={styles.sharingSection}>
-								<UserSearch onSelect={handleUserSelect} />
-								{sharedUsers.length > 0 && (
-									<div className={styles.sharedWith}>
-										<h4>共有中のユーザー:</h4>
-										<ul className={styles.sharedUserList}>
-											{sharedUsers.map((user) => (
-												<li
-													key={`${id}-${user.userId}`}
-													className={styles.sharedUserItem}
-												>
-													<div className={styles.userInfo}>
-														<span className={styles.userEmail}>
-															{user.email || "不明なユーザー"}
-														</span>
-														{user.displayName && (
-															<span className={styles.userName}>
-																{user.displayName}
-															</span>
-														)}
-													</div>
-													<button
-														type="button"
-														onClick={() => onRemoveShare(id, user.userId)}
-														className={styles.removeShareButton}
-													>
-														削除
-													</button>
-												</li>
-											))}
-										</ul>
-									</div>
-								)}
-							</div>
-						)}
-					</>
-				) : (
-					<form onSubmit={handleSubmit} className={styles.editForm}>
-						<input
-							type="text"
-							value={editedName}
-							onChange={(e) => setEditedName(e.target.value)}
-							className={styles.editInput}
-							// biome-ignore lint/a11y/noAutofocus: <explanation>
-							autoFocus
-						/>
-						<div className={styles.editButtons}>
-							<button type="submit" className={styles.saveButton}>
-								保存
-							</button>
-							<button
-								type="button"
-								onClick={() => {
-									setIsEditing(false);
-									setEditedName(name);
-								}}
-								className={styles.cancelButton}
-							>
-								キャンセル
-							</button>
-						</div>
-					</form>
+					</h3>
+					{userId === currentUserId && (
+						<button
+							type="button"
+							onClick={handleSettingsClick}
+							className={styles.settingsButton}
+						>
+							<Image src="/icons/more.svg" width={16} height={16} alt="設定" />
+						</button>
+					)}
+				</div>
+				<p className={styles.projectDate}>
+					作成日: {createdAt.toLocaleDateString()}
+				</p>
+				{isSettingsOpen && (
+					<ProjectSettingsModal
+						projectId={id}
+						projectName={name}
+						onClose={() => setIsSettingsOpen(false)}
+						onUpdate={onUpdate}
+						onShare={onShare}
+						onRemoveShare={onRemoveShare}
+						onDelete={onDelete}
+						sharedUsers={sharedUsers}
+						currentUserId={currentUserId}
+					/>
 				)}
 			</div>
 		</Link>

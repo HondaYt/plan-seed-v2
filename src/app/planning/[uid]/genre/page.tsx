@@ -24,9 +24,6 @@ function GenreBtn(props: GenreBtnProps) {
 }
 
 export default function GenrePage() {
-	const params = useParams();
-	const projectId = params.uid as string;
-
 	return (
 		<div className={styles.container}>
 			<main className={styles.main}>

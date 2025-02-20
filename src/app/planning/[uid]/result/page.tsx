@@ -157,7 +157,7 @@ ${
 				>
 					{copySuccess ? "コピーしました！" : "コピー"}
 				</button>
-				<LinkBtn href={"/"}>はじめからする</LinkBtn>
+				<LinkBtn href={"/dashboard"}>はじめからする</LinkBtn>
 			</div>
 		</div>
 	);

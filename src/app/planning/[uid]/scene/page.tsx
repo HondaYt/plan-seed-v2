@@ -17,7 +17,7 @@ function SceneContent() {
 		where: "",
 	});
 	const [isFormValid, setIsFormValid] = useState(false);
-	const [targetUrl, setTargetUrl] = useState("feature");
+	const [targetUrl, setTargetUrl] = useState("features");
 
 	useEffect(() => {
 		const isValid = formData.when.trim() !== "" && formData.where.trim() !== "";
@@ -27,7 +27,7 @@ function SceneContent() {
 			const params = new URLSearchParams();
 			params.append("when", encodeURIComponent(formData.when.trim()));
 			params.append("where", encodeURIComponent(formData.where.trim()));
-			setTargetUrl(`feature?${params.toString()}`);
+			setTargetUrl(`features?${params.toString()}`);
 		}
 	}, [formData]);
 
