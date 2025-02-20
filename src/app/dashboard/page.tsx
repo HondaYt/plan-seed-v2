@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./page.module.css";
 import AddProject from "@/components/AddProject";
-import type { Project } from "@/types/project";
+import type { Project, ProjectStatus } from "@/types/project";
 import {
 	createProject,
 	getUserProjects,
@@ -97,6 +97,11 @@ export default function DashboardPage() {
 		await signOut();
 	};
 
+	const handleProjectOpen = (project: Pick<Project, "id" | "status">) => {
+		const currentStep = project.status.currentStep || "genre";
+		router.push(`/planning/${project.id}/${currentStep}`);
+	};
+
 	if (!user) return null;
 
 	return (
@@ -126,17 +131,29 @@ export default function DashboardPage() {
 					<div className={styles.loading}>読み込み中...</div>
 				) : (
 					<div className={styles.projectList}>
-						{projects.map((project) => (
-							<ProjectItem
-								key={project.id}
-								{...project}
-								onUpdate={handleUpdateProject}
-								onShare={handleShareProject}
-								onRemoveShare={handleRemoveShare}
-								currentUserId={user.uid}
-								onDelete={handleDeleteProject}
-							/>
-						))}
+						{projects.map((project) => {
+							const projectWithStatus = {
+								...project,
+								status: project.status || {
+									currentStep: "genre",
+									completedSteps: [],
+									lastUpdated: new Date(),
+								},
+							};
+							return (
+								<ProjectItem
+									key={project.id}
+									{...projectWithStatus}
+									status={projectWithStatus.status}
+									onUpdate={handleUpdateProject}
+									onShare={handleShareProject}
+									onRemoveShare={handleRemoveShare}
+									currentUserId={user.uid}
+									onDelete={handleDeleteProject}
+									onOpen={handleProjectOpen}
+								/>
+							);
+						})}
 					</div>
 				)}
 			</main>

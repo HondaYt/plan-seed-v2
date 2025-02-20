@@ -7,11 +7,11 @@ interface LikedWord {
 	timestamp: number;
 }
 
-interface SidebarProps {
+type SidebarProps = {
+	inputText: string;
 	likedWords: LikedWord[];
 	onUnlike: (id: string) => void;
-	inputText: string;
-}
+};
 
 export function Sidebar({ likedWords, inputText, onUnlike }: SidebarProps) {
 	return (
@@ -38,7 +38,10 @@ export function Sidebar({ likedWords, inputText, onUnlike }: SidebarProps) {
 				href={{
 					pathname: "concept",
 					query: {
-						words: `${inputText},${likedWords.map((w) => w.word).join(",")}`,
+						keywords: [
+							...(inputText ? [inputText] : []),
+							...likedWords.map((w) => w.word),
+						].join(","),
 					},
 				}}
 			>

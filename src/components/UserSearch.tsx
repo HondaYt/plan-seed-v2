@@ -11,17 +11,28 @@ export default function UserSearch({ onSelect }: UserSearchProps) {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [results, setResults] = useState<UserSearchResult[]>([]);
 	const [isSearching, setIsSearching] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 
 	const handleSearch = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (!searchTerm.trim()) return;
+
+		if (!searchTerm.trim()) {
+			return;
+		}
 
 		setIsSearching(true);
+		setError(null);
+		setResults([]);
+
 		try {
 			const users = await searchUsers(searchTerm.trim());
 			setResults(users);
+			if (users.length === 0) {
+				setError("ユーザーが見つかりませんでした");
+			}
 		} catch (error) {
 			console.error("ユーザー検索に失敗しました:", error);
+			setError("検索中にエラーが発生しました");
 		} finally {
 			setIsSearching(false);
 		}
@@ -29,22 +40,37 @@ export default function UserSearch({ onSelect }: UserSearchProps) {
 
 	return (
 		<div className={styles.userSearch}>
-			<form onSubmit={handleSearch} className={styles.searchForm}>
+			<form
+				onSubmit={handleSearch}
+				className={styles.searchForm}
+				onClick={(e) => {
+					e.stopPropagation();
+				}}
+			>
 				<input
 					type="email"
 					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
+					onChange={(e) => {
+						setSearchTerm(e.target.value);
+					}}
 					placeholder="メールアドレスで検索"
 					className={styles.searchInput}
 				/>
-				<button type="submit" className={styles.searchButton}>
-					検索
+				<button
+					type="submit"
+					className={styles.searchButton}
+					disabled={isSearching}
+					onClick={(e) => {
+						e.stopPropagation();
+					}}
+				>
+					{isSearching ? "検索中..." : "検索"}
 				</button>
 			</form>
 
-			{isSearching ? (
-				<div className={styles.loading}>検索中...</div>
-			) : (
+			{error && <div className={styles.error}>{error}</div>}
+
+			{!isSearching && results.length > 0 && (
 				<ul className={styles.resultList}>
 					{results.map((user) => (
 						<li key={user.uid} className={styles.resultItem}>

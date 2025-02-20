@@ -14,6 +14,7 @@ import { updateProjectState, getProjectState } from "@/lib/firebase/projects";
 import type { ProjectState } from "@/types/project";
 import styles from "./layout.module.css";
 import { PlanningContext } from "@/contexts/PlanningContext";
+import { useProjectProgress } from "@/hooks/useProjectProgress";
 
 const initialState: ProjectState = {
 	genre: "",
@@ -63,6 +64,7 @@ export default function ProjectLayout({
 	const [state, setState] = useState<ProjectState>(initialState);
 	const [isOpen, setIsOpen] = useState(true);
 	const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+	const { updateProgress } = useProjectProgress(projectId);
 
 	// サイドバーの表示制御
 	useEffect(() => {
@@ -175,6 +177,22 @@ export default function ProjectLayout({
 			}
 		}
 	}, [searchParams, isAuthorized]);
+
+	// パスの変更を監視して進捗を更新
+	useEffect(() => {
+		if (!isAuthorized || !pathname) return;
+
+		// /planning/[uid]/[step] の形式からstepを抽出
+		const pathParts = pathname.split("/");
+		const currentStep = pathParts[pathParts.length - 1];
+
+		console.log("Path changed:", {
+			pathname,
+			currentStep,
+		});
+
+		updateProgress(currentStep);
+	}, [pathname, isAuthorized, updateProgress]);
 
 	// プロジェクトの権限チェックとステートの初期読み込み
 	useEffect(() => {

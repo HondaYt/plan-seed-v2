@@ -17,6 +17,12 @@ export type ProjectState = {
 	mainFeatureIndex: number;
 };
 
+export type ProjectStatus = {
+	currentStep: string;
+	completedSteps: string[];
+	lastUpdated: Date;
+};
+
 export interface Project {
 	id: string;
 	name: string;
@@ -25,4 +31,5 @@ export interface Project {
 	sharedWith: string[];
 	deletedAt?: Date | null;
 	state?: ProjectState;
+	status: ProjectStatus;
 }

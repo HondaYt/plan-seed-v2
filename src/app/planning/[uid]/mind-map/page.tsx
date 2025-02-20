@@ -89,6 +89,23 @@ function MindMapContentInner({
 	setShowTutorial: (value: boolean) => void;
 }) {
 	const searchParams = useSearchParams();
+	const genre = searchParams.get("genre") || "other";
+	const keywordsParam = searchParams.get("keywords");
+	const existingKeywords = keywordsParam
+		? decodeURIComponent(keywordsParam).split(",")
+		: [];
+
+	useEffect(() => {
+		if (existingKeywords.length > 0) {
+			setUsedWords(new Set(existingKeywords));
+			const existingLikedWords = existingKeywords.map((word, index) => ({
+				id: String(index),
+				word,
+				timestamp: Date.now(),
+			}));
+			setLikedWords(existingLikedWords);
+		}
+	}, [existingKeywords, setUsedWords, setLikedWords]);
 
 	useEffect(() => {
 		const tutorialPreference = localStorage.getItem("hideTutorial");
@@ -118,7 +135,6 @@ function MindMapContentInner({
 			setIsLoading(true);
 			const currentWords = getAllWords(tree);
 			if (textValue) currentWords.push(textValue);
-			const genre = searchParams.get("genre") || "other";
 
 			const response = await fetch("/api/mindMapGpt", {
 				method: "POST",
@@ -129,7 +145,7 @@ function MindMapContentInner({
 					message: word,
 					usedWords: Array.from(usedWords),
 					language: selectedLanguage,
-					genre: genre,
+					genre,
 				}),
 			});
 

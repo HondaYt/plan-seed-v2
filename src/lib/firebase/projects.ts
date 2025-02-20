@@ -13,6 +13,17 @@ import {
 	getDoc,
 } from "firebase/firestore";
 import type { Project, ProjectState } from "@/types/project";
+import type { Timestamp } from "firebase/firestore";
+
+type FirebaseDate = Date | Timestamp | string;
+
+const convertToDate = (dateValue: FirebaseDate | null | undefined): Date => {
+	if (!dateValue) return new Date();
+	if (dateValue instanceof Date) return dateValue;
+	if (typeof dateValue === "string") return new Date(dateValue);
+	if ("toDate" in dateValue) return dateValue.toDate();
+	return new Date();
+};
 
 export const createProject = async (userId: string, name: string) => {
 	try {
@@ -22,6 +33,11 @@ export const createProject = async (userId: string, name: string) => {
 			createdAt: serverTimestamp(),
 			sharedWith: [],
 			deletedAt: null,
+			status: {
+				currentStep: "genre",
+				completedSteps: [],
+				lastUpdated: new Date(),
+			},
 		});
 		return {
 			id: docRef.id,
@@ -30,6 +46,11 @@ export const createProject = async (userId: string, name: string) => {
 			createdAt: new Date(),
 			sharedWith: [],
 			deletedAt: null,
+			status: {
+				currentStep: "genre",
+				completedSteps: [],
+				lastUpdated: new Date(),
+			},
 		} as Project;
 	} catch (error) {
 		console.error("Error creating project:", error);
@@ -58,21 +79,52 @@ export const getUserProjects = async (userId: string): Promise<Project[]> => {
 			getDocs(sharedProjectsQuery),
 		]);
 
-		// 両方の結果を結合
 		const projects = [
-			...ownedSnapshot.docs.map((doc) => ({
-				id: doc.id,
-				...doc.data(),
-				createdAt: doc.data().createdAt?.toDate() || new Date(),
-				deletedAt: doc.data().deletedAt?.toDate() || null,
-			})),
-			...sharedSnapshot.docs.map((doc) => ({
-				id: doc.id,
-				...doc.data(),
-				createdAt: doc.data().createdAt?.toDate() || new Date(),
-				deletedAt: doc.data().deletedAt?.toDate() || null,
-			})),
+			...ownedSnapshot.docs.map((doc) => {
+				const data = doc.data();
+				const status = data.status || {};
+
+				// 配列が文字列として保存されている可能性があるため、配列に変換
+				const completedSteps = Array.isArray(status.completedSteps)
+					? status.completedSteps
+					: [];
+
+				return {
+					id: doc.id,
+					...data,
+					createdAt: convertToDate(data.createdAt),
+					deletedAt: data.deletedAt ? convertToDate(data.deletedAt) : null,
+					status: {
+						currentStep: status.currentStep || "genre",
+						completedSteps,
+						lastUpdated: convertToDate(status.lastUpdated),
+					},
+				};
+			}),
+			...sharedSnapshot.docs.map((doc) => {
+				const data = doc.data();
+				const status = data.status || {};
+
+				// 配列が文字列として保存されている可能性があるため、配列に変換
+				const completedSteps = Array.isArray(status.completedSteps)
+					? status.completedSteps
+					: [];
+
+				return {
+					id: doc.id,
+					...data,
+					createdAt: convertToDate(data.createdAt),
+					deletedAt: data.deletedAt ? convertToDate(data.deletedAt) : null,
+					status: {
+						currentStep: status.currentStep || "genre",
+						completedSteps,
+						lastUpdated: convertToDate(status.lastUpdated),
+					},
+				};
+			}),
 		] as Project[];
+
+		console.log("Processed projects:", projects); // デバッグ用
 
 		return projects;
 	} catch (error) {

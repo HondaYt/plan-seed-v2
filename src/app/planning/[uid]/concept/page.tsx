@@ -13,8 +13,10 @@ interface ConceptResponse {
 
 function ConceptContent() {
 	const searchParams = useSearchParams();
-	const wordsParam = searchParams.get("words");
-	const words = wordsParam ? decodeURIComponent(wordsParam).split(",") : [];
+	const keywordsParam = searchParams.get("keywords");
+	const keywords = keywordsParam
+		? decodeURIComponent(keywordsParam).split(",")
+		: [];
 	const [concepts, setConcepts] = useState<string[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [selectedConcept, setSelectedConcept] = useState<string>("");
@@ -27,7 +29,7 @@ function ConceptContent() {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ words }),
+				body: JSON.stringify({ words: keywords }),
 			});
 			const data: ConceptResponse = await response.json();
 
@@ -63,7 +65,7 @@ function ConceptContent() {
 			<div className={styles.wordList}>
 				<h2>選択した単語：</h2>
 				<ul>
-					{words.map((word) => (
+					{keywords.map((word) => (
 						<li key={word}>{word}</li>
 					))}
 				</ul>
@@ -71,7 +73,7 @@ function ConceptContent() {
 					type="button"
 					className={styles.generateButton}
 					onClick={generateConcepts}
-					disabled={loading || words.length === 0}
+					disabled={loading || keywords.length === 0}
 				>
 					{loading ? "生成中..." : "企画案を生成"}
 				</button>

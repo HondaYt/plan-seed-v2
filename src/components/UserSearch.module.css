@@ -93,4 +93,11 @@
 .userName {
 	font-size: 0.75rem;
 	color: #6b7280;
+}
+
+.error {
+	color: #ff4444;
+	text-align: center;
+	margin: 10px 0;
+	font-size: 0.9em;
 } 
