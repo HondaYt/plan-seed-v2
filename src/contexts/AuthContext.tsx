@@ -50,9 +50,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				},
 				{ merge: true }, // 既存のデータがある場合はマージ
 			);
-		} catch (error) {
+		} catch (error: unknown) {
 			console.error("Google認証エラー:", error);
-			throw error;
+			if (
+				error instanceof Error &&
+				"code" in error &&
+				error.code === "auth/auth-domain-config-required"
+			) {
+				throw new Error(
+					"認証ドメインの設定が必要です。管理者に連絡してください。",
+				);
+			}
+			throw new Error(
+				"認証中にエラーが発生しました。しばらく時間をおいて再度お試しください。",
+			);
 		}
 	};
 
