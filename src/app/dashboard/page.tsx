@@ -113,6 +113,7 @@ export default function DashboardPage() {
 					width={300}
 					alt="Plan Seed"
 					className={styles.logo}
+					priority
 				/>
 				<div className={styles.userSection}>
 					<span className={styles.userName}>{user.displayName}</span>
