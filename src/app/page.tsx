@@ -63,6 +63,7 @@ export default function Page() {
 						width={500}
 						alt="Plan Seed"
 						className={styles.logo}
+						priority
 					/>
 					<p className={styles.catchphrase}>アイデアを育て、企画を実らせる</p>
 				</div>
